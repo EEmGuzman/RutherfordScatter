@@ -2,6 +2,8 @@
 #include "TMath.h"
 
 void InitAlpha::setVector(){
+  //Setting up initial beam of particles. Will have a radius of 1.0 mm. While statement used to ensure
+  //R<1.0 by running until radius is within 1.0
   Double_t R0 = 1.0;
   Double_t x0 = 1.0;
   Double_t y0 = 1.0;
@@ -9,11 +11,11 @@ void InitAlpha::setVector(){
     x0 = 2.0*(getR->Uniform(1.0)-0.5);
     y0 = 2.0*(getR->Uniform(1.0)-0.5);
   }
-  InitPosX = x0*R0;
+  InitPosX = x0*R0; //What is point of multiplying by R0?
   InitPosY = y0*R0;
 
-  Double_t vz = getR->Uniform(0.995,1.0);
-  Double_t vrTheta = 2.0*TMath::Pi()*getR->Uniform(1.0);
+  Double_t vz = getR->Uniform(0.995,1.0); //Having velocity (perpendicular) to xy plane be between 0.995 and 1.0.
+  Double_t vrTheta = 2.0*TMath::Pi()*getR->Uniform(1.0); //Sets angle between 0 and 2pi
   Double_t vx = TMath::Sqrt(1.0-vz*vz)*TMath::Sin(vrTheta);
   Double_t vy = TMath::Sqrt(1.0-vz*vz)*TMath::Cos(vrTheta);
   Double_t x1 = x0+distance*vx/vz;
@@ -25,7 +27,7 @@ void InitAlpha::setVector(){
     vrTheta = 2.0*TMath::Pi()*getR->Uniform(1.0);
     vx = TMath::Sqrt(1.0-vz*vz)*TMath::Sin(vrTheta);
     vy = TMath::Sqrt(1.0-vz*vz)*TMath::Cos(vrTheta);
-    x1 = x0+(distance-1)*vx/vz;
+    x1 = x0+(distance-1)*vx/vz; //I don't understand this redefinition
     y1 = y0+(distance-1)*vy/vz;
     x2 = x0+distance*vx/vz;
     y2 = y0+distance*vy/vz;
@@ -35,6 +37,6 @@ void InitAlpha::setVector(){
 
   Double_t P = 202.341;
   Double_t E = 3732.88;
-  initVector->SetPxPyPzE(P*vx,P*vy,P*vz,E);
+  initVector->SetPxPyPzE(P*vx,P*vy,P*vz,E); //why multiply by v?
 }
 

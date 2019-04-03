@@ -3,6 +3,9 @@
 #include "InitAlpha.h"
 #include "ScatterAlpha.h"
 
+#include "iostream"
+#include "fstream"
+
 TreeAll myRutherfordData;
 TTree* tree = new TTree("rutherfordData","A ROOT tree with Rutherford Data");
 
@@ -55,7 +58,7 @@ int main(int argc, char* argv[]){
   tree->Branch("SensorPosXY",&myRutherfordData.SensorPosXY,"SensorPosXY/D");
 
   /*Fill the Tree*/
-  for(int i=0;i<200000;i++){
+  for(int i=0;i<851247;i++){
     InitAlpha* getAlpha = new InitAlpha(50.0,0);
     getAlpha->setVector();
     myRutherfordData.kineticEnergy = 5.488;
@@ -69,6 +72,10 @@ int main(int argc, char* argv[]){
     myRutherfordData.targetPosY = getAlpha->getTargetPosY();
     myRutherfordData.targetPosZ = getAlpha->getTargetPosZ();
     
+    /*attempt to write inital position to a file*/
+    std::ofstream initialPosition("data/initalPosition.txt", std::ios_base::app);
+    initialPosition << getAlpha->getInitPosX() << ',' << getAlpha->getInitPosY() << std::endl;
+
     ScatterAlpha* getScatter = new ScatterAlpha(10.0,getAlpha->getTargetPosZ(),0);
     getScatter->setVector(getAlpha->getInitMovX(),getAlpha->getInitMovY(),getAlpha->getInitMovZ(),
 	getAlpha->getInitE(),getAlpha->getTargetPosX(),getAlpha->getTargetPosY());
@@ -83,6 +90,18 @@ int main(int argc, char* argv[]){
     myRutherfordData.SensorPosY = getScatter->getSensorPosY();
     myRutherfordData.SensorPosZ = getScatter->getSensorPosZ();
     myRutherfordData.SensorPosXY = getScatter->getSensorPosXY();
+
+    /*attempt to write initial beam no scattering to a csv file*/
+    std::ofstream noScatPosition("data/noScattering.txt", std::ios_base::app);
+    noScatPosition << getScatter->getNoTSensorPosX() << ',' << getScatter->getNoTSensorPosY() << std::endl;
+
+    /*attempt to write scattered beam data to csv file*/
+    std::ofstream wScatPosition("data/wScattering.txt", std::ios_base::app);
+    wScatPosition << getScatter->getSensorPosX() << ',' << getScatter->getSensorPosY() << std::endl;
+
+    /*attempt to get angle of scattering*/
+    std::ofstream anglePosition("data/Angles.txt", std::ios_base::app);
+    anglePosition << getScatter->getThetaAngle() << std::endl;
 
     tree->Fill();
   }

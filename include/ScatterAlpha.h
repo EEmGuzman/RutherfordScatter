@@ -26,6 +26,8 @@ private:
   Double_t noTSensorPosZ;
   Double_t noTSensorPosXY;
 
+  Double_t theta;
+
 public:
   ScatterAlpha(Double_t value, Double_t targetPosZ,Int_t seed){
     distance = value;// unit: mm
@@ -54,6 +56,8 @@ public:
   Double_t getNoTSensorPosY(){return noTSensorPosY;}
   Double_t getNoTSensorPosZ(){return noTSensorPosZ;}
   Double_t getNoTSensorPosXY(){return noTSensorPosXY;}
+
+  Double_t getThetaAngle(){return theta;}
 };
 
 #endif

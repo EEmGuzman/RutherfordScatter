@@ -17,7 +17,7 @@ clean:
 	rm -rf obj/* rutherfordScatter.exe;
 
 obj/%.o : src/%.cpp include/%.h
-	mkdir -p obj/; $(CXX) $(CXXFLAGS) -c $< -o $@
+	mkdir -p obj/; $(CXX) -o $@ $(CXXFLAGS) -c $<
 
 rutherfordScatter.exe: obj/ScatterAlpha.o obj/InitAlpha.o obj/main.o
-	$(LD)	$(ROOTCFLAGS) $(LIBS) $(ROOTLIBS) obj/ScatterAlpha.o obj/InitAlpha.o obj/main.o -o $@
+	$(LD) -o $@ obj/ScatterAlpha.o obj/InitAlpha.o obj/main.o $(ROOTCFLAGS) $(LIBS) $(ROOTLIBS) 

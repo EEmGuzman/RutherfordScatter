@@ -5,13 +5,13 @@ void ScatterAlpha::oneScatter(vector<Double_t>& PVector){
 
   /*Atom Scattering*/
   // get value of b
-  Double_t x = getR->Uniform(-144.0, 144.0);
-  Double_t y = getR->Uniform(-144.0, 144.0);
-  Double_t d = TMath::Sqrt(x*x+y*y);
+  Double_t x = getR->Uniform(-144.0, 144.0); //Covalent Radius of Au atom
+  Double_t y = getR->Uniform(-144.0, 144.0); 
+  Double_t d = TMath::Sqrt(x*x+y*y); //Radius or Position of scatter
   Double_t constantValue = 48.26;//constant value of F(theta,d)
-  Double_t theta = 2.0*TMath::ATan(1.0/(constantValue*d));
-  Double_t phi = 0.0;
-  if(x>0 && y>0) phi = TMath::ATan(y/x);
+  Double_t theta = 2.0*TMath::ATan(1.0/(constantValue*d)); //scattering angle with respect to horizontal.
+  Double_t phi = 0.0; //initialize angle of momentum change w/respect to vertical
+  if(x>0 && y>0) phi = TMath::ATan(y/x); //Quadrants?
   else if(x>0 && y<0) phi = TMath::ATan(y/x);
   else if(x<0 && y>0) phi = TMath::ATan(y/x)-TMath::Pi()/2;
   else phi = TMath::ATan(y/x)+TMath::Pi()/2;
